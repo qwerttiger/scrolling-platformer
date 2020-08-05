@@ -4,6 +4,7 @@ screen=pygame.display.set_mode([700,700])
 pygame.display.set_caption("Scrolling platformer")
 level=1
 player=pygame.image.load("C:/Users/Rainbow/Documents/GitHub/scrolling-platformer/player.png")
+player.set_colorkey((255,255,255))
 levelpic=None
 groundmask=None
 lavamask=None
@@ -15,11 +16,10 @@ shrinkmask=None
 normalmask=None
 winmask=None
 areamask=None
-screenposx=0
-screenposy=2800
+screenposx=-300
+screenposy=3100
 velx=0
 vely=0
-screen.fill((255,255,255))
 def loadlevel():
   global levelpic,groundmask,lavamask,jumpymask,fastleftmask,fastrightmask,watermask,shrinkmask,normalmask,winmask,areamask
   levelpic=pygame.image.load(f"C:/Users/Rainbow/Documents/GitHub/scrolling-platformer/levels/{level}.png")
@@ -36,31 +36,33 @@ def loadlevel():
 while True:
   loadlevel()
   while True:
+    screen.fill((255,255,255))
     for event in pygame.event.get():
       if event.type==pygame.QUIT:
         pygame.quit()
         sys.exit()
     screen.blit(levelpic,(-screenposx,-screenposy))
     keys=pygame.key.get_pressed()
-    if velx>=0:
-      velx-=1
-    if velx<=0:
-      velx+=1
-    if keys[pygame.K_UP]:
-      vely+=10
-    if keys[pygame.K_LEFT]:
+    if velx>=2:
       velx-=2
-    if keys[pygame.K_RIGHT]:
+    elif velx<=-2:
       velx+=2
-    if screenposx<0:
-      screenposx=0
+    else:
       velx=0
-    if screenposx>2800:
-      screenposx=2800
+    if keys[pygame.K_UP]:
+      vely+=0.1
+    if keys[pygame.K_LEFT]:
+      velx-=3
+    if keys[pygame.K_RIGHT]:
+      velx+=3
+    if screenposx<-300:
+      screenposx=-300
       velx=0
-    
+    if screenposx>3150:
+      screenposx=3150
+      velx=0
+    print(velx)
     screenposx+=velx
     screenposy-=vely
-    print(screenposx)
     screen.blit(player,(300,300))
     pygame.display.flip()
