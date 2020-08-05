@@ -5,6 +5,9 @@ pygame.display.set_caption("Scrolling platformer")
 level=1
 player=pygame.image.load("C:/Users/Rainbow/Documents/GitHub/scrolling-platformer/player.png")
 player.set_colorkey((255,255,255))
+bottom=pygame.mask.from_threshold(pygame.image.load("C:/Users/Rainbow/Documents/GitHub/scrolling-platformer/bottom.png"),(0,0,0),(1,1,1))
+side=pygame.mask.from_threshold(pygame.image.load("C:/Users/Rainbow/Documents/GitHub/scrolling-platformer/side.png"),(0,0,0),(1,1,1))
+top=pygame.mask.from_threshold(pygame.image.load("C:/Users/Rainbow/Documents/GitHub/scrolling-platformer/top.png"),(0,0,0),(1,1,1))
 levelpic=None
 groundmask=None
 lavamask=None
@@ -37,7 +40,9 @@ def loadlevel():
 while True:
   loadlevel()
   while True:
-    ground=bool(groundmask.overlap_area(playermask,(screenposx+300,screenposy+301)))
+    tbottom=bool(groundmask.overlap_area(bottom,(screenposx+300,screenposy+300)))
+    tside=bool(groundmask.overlap_area(side,(screenposx+299,screenposy+300)))
+    ttop=bool(groundmask.overlap_area(top,(screenposx+300,screenposy+299)))
     screen.fill((255,255,255))
     for event in pygame.event.get():
       if event.type==pygame.QUIT:
@@ -51,11 +56,11 @@ while True:
       velx+=2
     else:
       velx=0
-    if not ground:
+    if not tbottom:
       vely-=2
     else:
       vely=0
-    if keys[pygame.K_UP] and ground:
+    if keys[pygame.K_UP] and tbottom:
       vely+=30
     if keys[pygame.K_LEFT]:
       velx-=3
