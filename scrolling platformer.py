@@ -1,4 +1,4 @@
-import pygame,random
+import pygame,sys
 pygame.init()
 screen=pygame.display.set_mode([700,700])
 pygame.display.set_caption("Scrolling platformer")
@@ -17,6 +17,8 @@ winmask=None
 areamask=None
 screenposx=0
 screenposy=2800
+velx=0
+vely=0
 screen.fill((255,255,255))
 def loadlevel():
   global levelpic,groundmask,lavamask,jumpymask,fastleftmask,fastrightmask,watermask,shrinkmask,normalmask,winmask,areamask
@@ -36,13 +38,29 @@ while True:
   while True:
     for event in pygame.event.get():
       if event.type==pygame.QUIT:
-        pygame.exit()
+        pygame.quit()
+        sys.exit()
     screen.blit(levelpic,(-screenposx,-screenposy))
-    pygame.display.flip()
     keys=pygame.key.get_pressed()
+    if velx>=0:
+      velx-=1
+    if velx<=0:
+      velx+=1
     if keys[pygame.K_UP]:
-      screenposy-=10
+      vely+=10
     if keys[pygame.K_LEFT]:
-      screenposx-=10
+      velx-=2
     if keys[pygame.K_RIGHT]:
-      screenposx+=10
+      velx+=2
+    if screenposx<0:
+      screenposx=0
+      velx=0
+    if screenposx>2800:
+      screenposx=2800
+      velx=0
+    
+    screenposx+=velx
+    screenposy-=vely
+    print(screenposx)
+    screen.blit(player,(300,300))
+    pygame.display.flip()
