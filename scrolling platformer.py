@@ -32,6 +32,17 @@ def loadlevel():
   winmask=pygame.mask.from_threshold(levelpic,(255,255,0))
   areamask=pygame.mask.from_threshold(levelpic,(255,100,255))
 while True:
-  for event in pygame.event.get():
-    if event.type==pygame.QUIT:
-      pygame.exit()
+  loadlevel()
+  while True:
+    for event in pygame.event.get():
+      if event.type==pygame.QUIT:
+        pygame.exit()
+    screen.blit(levelpic,(-screenposx,-screenposy))
+    pygame.display.flip()
+    keys=pygame.key.get_pressed()
+    if keys[pygame.K_UP]:
+      screenposy-=10
+    if keys[pygame.K_LEFT]:
+      screenposx-=10
+    if keys[pygame.K_RIGHT]:
+      screenposx+=10
