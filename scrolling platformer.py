@@ -1,6 +1,6 @@
 import pygame,random
 pygame.init()
-pygame.display.set_mode([700,700])
+screen=pygame.display.set_mode([700,700])
 pygame.display.set_caption("Scrolling platformer")
 level=1
 player=pygame.image.load("C:/Users/Rainbow/Documents/GitHub/scrolling-platformer/player.png")
@@ -15,6 +15,9 @@ shrinkmask=None
 normalmask=None
 winmask=None
 areamask=None
+screenposx=0
+screenposy=2800
+screen.fill((255,255,255))
 def loadlevel():
   global levelpic,groundmask,lavamask,jumpymask,fastleftmask,fastrightmask,watermask,shrinkmask,normalmask,winmask,areamask
   levelpic=pygame.image.load(f"C:/Users/Rainbow/Documents/GitHub/scrolling-platformer/levels/{level}.png")
@@ -28,3 +31,7 @@ def loadlevel():
   normalmask=pygame.mask.from_threshold(levelpic,(0,0,100))
   winmask=pygame.mask.from_threshold(levelpic,(255,255,0))
   areamask=pygame.mask.from_threshold(levelpic,(255,100,255))
+while True:
+  for event in pygame.event.get():
+    if event.type==pygame.QUIT:
+      pygame.exit()
