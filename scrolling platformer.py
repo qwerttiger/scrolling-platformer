@@ -1,4 +1,5 @@
-import pygame,sys,time
+import pygame,sys,time,os
+os.environ['PYGAME_HIDE_SUPPORT_PROMPT']="hide"
 pygame.init()
 screen=pygame.display.set_mode([700,700])
 pygame.display.set_caption("Scrolling platformer")
@@ -59,6 +60,7 @@ while True:
     ttop=bool(groundmask.overlap_area(top,(screenposx+300,screenposy+299)))
     win=bool(winmask.overlap_area(playermask,(screenposx+300,screenposy+300)))
     lava=bool(lavamask.overlap_area(playermask,(screenposx+300,screenposy+300)))
+    jumpy=bool(jumpymask.overlap_area(playermask,(screenposx+300,screenposy+300)))
     screen.fill((255,255,255))
     for event in pygame.event.get():
       if event.type==pygame.QUIT:
@@ -80,9 +82,11 @@ while True:
       velx=0
     if not tbottom:
       vely-=2
-    else:
+    if tbottom and not tside:
       vely=0
       up()
+    if ttop:
+      vely=-vely
     if keys[pygame.K_UP] and tbottom:
       vely+=30
     if keys[pygame.K_LEFT]:
@@ -91,6 +95,8 @@ while True:
     if keys[pygame.K_RIGHT]:
       velx+=3
       lorr=True
+    if jumpy:
+      vely+=20
     screenposx+=velx
     screenposy-=vely
     if lorr:
