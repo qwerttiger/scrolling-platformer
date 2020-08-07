@@ -19,7 +19,6 @@ watermask=None
 shrinkmask=None
 normalmask=None
 winmask=None
-areamask=None
 playermask=pygame.mask.Mask((50,50),True)
 screenposx=-300
 screenposy=3100
@@ -27,30 +26,41 @@ velx=0
 vely=0
 lorr=True
 def loadlevel():
-  global levelpic,groundmask,lavamask,jumpymask,fastleftmask,fastrightmask,watermask,shrinkmask,normalmask,winmask,areamask
-  levelpic=pygame.image.load(f"C:/Users/Rainbow/Documents/GitHub/scrolling-platformer/levels/{level}.png")
-  groundmask=pygame.mask.from_threshold(levelpic,(0,0,0),(1,1,1))
-  lavamask=pygame.mask.from_threshold(levelpic,(255,0,0),(1,1,1))
-  jumpymask=pygame.mask.from_threshold(levelpic,(255,255,100),(1,1,1))
-  fastleftmask=pygame.mask.from_threshold(levelpic,(0,255,0),(1,1,1))
-  fastrightmask=pygame.mask.from_threshold(levelpic,(255,0,255),(1,1,1))
-  watermask=pygame.mask.from_threshold(levelpic,(0,255,255),(1,1,1))
-  shrinkmask=pygame.mask.from_threshold(levelpic,(0,100,0),(1,1,1))
-  normalmask=pygame.mask.from_threshold(levelpic,(0,0,100),(1,1,1))
-  winmask=pygame.mask.from_threshold(levelpic,(255,255,0),(1,1,1))
-  areamask=pygame.mask.from_threshold(levelpic,(255,100,255),(1,1,1))
+  try:
+    global levelpic,groundmask,lavamask,jumpymask,fastleftmask,fastrightmask,watermask,shrinkmask,normalmask,winmask,areamask
+    levelpic=pygame.image.load(f"C:/Users/Rainbow/Documents/GitHub/scrolling-platformer/levels/{level}.png")
+    groundmask=pygame.mask.from_threshold(levelpic,(0,0,0),(1,1,1))
+    lavamask=pygame.mask.from_threshold(levelpic,(255,0,0),(1,1,1))
+    jumpymask=pygame.mask.from_threshold(levelpic,(255,255,100),(1,1,1))
+    fastleftmask=pygame.mask.from_threshold(levelpic,(0,255,0),(1,1,1))
+    fastrightmask=pygame.mask.from_threshold(levelpic,(255,0,255),(1,1,1))
+    watermask=pygame.mask.from_threshold(levelpic,(0,255,255),(1,1,1))
+    shrinkmask=pygame.mask.from_threshold(levelpic,(0,100,0),(1,1,1))
+    normalmask=pygame.mask.from_threshold(levelpic,(0,0,100),(1,1,1))
+    winmask=pygame.mask.from_threshold(levelpic,(255,255,0),(1,1,1))
+  except:
+    pygame.quit()
+    input("YOU WIN")
+    sys.exit()
 while True:
   loadlevel()
   while True:
     tbottom=bool(groundmask.overlap_area(bottom,(screenposx+300,screenposy+300)))
     tside=bool(groundmask.overlap_area(side,(screenposx+299,screenposy+300)))
     ttop=bool(groundmask.overlap_area(top,(screenposx+300,screenposy+299)))
+    win=bool(winmask.overlap_area(playermask,(screenposx+300,screenposy+300)))
     screen.fill((255,255,255))
     for event in pygame.event.get():
       if event.type==pygame.QUIT:
         pygame.quit()
         sys.exit()
-    screen.blit(levelpic,(-screenposx,-screenposy))
+    if screenposx<-300:
+      screenposx=-300
+      velx=0
+    if screenposx>3150:
+      screenposx=3150
+      velx=0
+    screen.blit(levelpic,(-screenposx,-round(screenposy)))
     keys=pygame.key.get_pressed()
     if velx>=2:
       velx-=2
@@ -70,15 +80,14 @@ while True:
     if keys[pygame.K_RIGHT]:
       velx+=3
       lorr=True
-    if screenposx<-300:
-      screenposx=-300
-      velx=0
-    if screenposx>3150:
-      screenposx=3150
-      velx=0
     screenposx+=velx
     screenposy-=vely
-    if lorr: screen.blit(playerr,(300,300))
-    else: screen.blit(playerl,(300,300))
+    if lorr:
+      screen.blit(playerr,(300,300))
+    else:
+      screen.blit(playerl,(300,300))
+    if win:
+      break
     pygame.display.flip()
     time.sleep(0.02)
+  level+=1
