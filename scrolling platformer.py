@@ -46,6 +46,10 @@ def reset():
   screenposy=3100
   velx=0
   vely=0
+def up():
+  global screenposy
+  while bool(groundmask.overlap_area(bottom,(screenposx+300,screenposy+299))):
+    screenposy-=1
 while True:
   loadlevel()
   reset()
@@ -68,9 +72,9 @@ while True:
       velx=0
     screen.blit(levelpic,(-screenposx,-round(screenposy)))
     keys=pygame.key.get_pressed()
-    if velx>=2:
+    if velx>=2 and velx<=30:
       velx-=2
-    elif velx<=-2:
+    elif velx<=-2 and velx>=-30:
       velx+=2
     else:
       velx=0
@@ -78,6 +82,7 @@ while True:
       vely-=2
     else:
       vely=0
+      up()
     if keys[pygame.K_UP] and tbottom:
       vely+=30
     if keys[pygame.K_LEFT]:
