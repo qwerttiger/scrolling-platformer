@@ -85,7 +85,7 @@ while True:
     if tbottom and not tside:
       vely=0
       up()
-    if ttop:
+    if ttop and not tbottom:
       vely=-vely
     if keys[pygame.K_UP] and tbottom:
       vely+=30
