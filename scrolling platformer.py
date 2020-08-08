@@ -65,11 +65,18 @@ def reset(): #reset position and speed
   
   velx=0 #x speed=0
   vely=0 #y speed=0
+
 def up(): #go up
   global screenposy #global y position
   
   while bool(groundmask.overlap_area(bottom,(screenposx+300,screenposy+299))): #while touching ground
     screenposy-=1 #go up
+
+def down(): #go down
+  global screenposy #global y position
+  
+  while bool(groundmask.overlap_area(top,(screenposx+300,screenposy+299))): #while touching ground
+    screenposy+=1 #go up
 
 while True: #level loop
   loadlevel() #load the level
@@ -101,7 +108,7 @@ while True: #level loop
       screenposx=3150 #go back
       velx=0 #freeze speed
     
-    screen.blit(levelpic,(-screenposx,-round(screenposy))) #draw the background
+    screen.blit(levelpic,(-screenposx,-screenposy)) #draw the background
 
     #friction
     if velx>=2: #going right
@@ -114,31 +121,29 @@ while True: #level loop
     if not tbottom: #if bottom not touching ground
       vely-=2 #go down
     
-    if tbottom and not tside: #if bottom touching ground
+    if tbottom and not ttop: #if bottom touching ground
       vely=0 #stop
       up() #go up
-    
-    if tbottom and tside:
-      vely=0
-    
-    if ttop and not tbottom and not tside: #if up touching but not down touching
-      vely=-vely #reverse
+
+    if ttop and not tbottom: #if up touching but not down touching
+      vely=0 #stop
+      down()
 
     if tside:
       velx=-velx
 
     if fastleft:
-      velx-=10
+      velx-=30
     if fastright:
-      velx+=10
+      velx+=30
 
     keys=pygame.key.get_pressed() #the pressed keys
     if keys[pygame.K_UP] and tbottom: #if pressing up and touching bottom
       vely+=30 #go up
-    if keys[pygame.K_LEFT] and velx>=-30: #if going left and less than max speed
+    if keys[pygame.K_LEFT]: #if going left
       velx-=3 #go left
       lorr=False #face left
-    if keys[pygame.K_RIGHT] and velx<=30: #if going right and less than max speed
+    if keys[pygame.K_RIGHT]: #if going right
       velx+=3 #go right
       lorr=True #face right
     
