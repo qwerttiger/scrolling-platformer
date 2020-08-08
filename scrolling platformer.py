@@ -84,6 +84,8 @@ while True: #level loop
     win=bool(winmask.overlap_area(playermask,(screenposx+300,screenposy+300))) #touching win
     lava=bool(lavamask.overlap_area(playermask,(screenposx+300,screenposy+300))) #touching lava
     jumpy=bool(jumpymask.overlap_area(playermask,(screenposx+300,screenposy+300))) #touching jumpy
+    fastleft=bool(fastleftmask.overlap_area(playermask,(screenposx+300,screenposy+300))) #touching <-
+    fastright=bool(fastrightmask.overlap_area(playermask,(screenposx+300,screenposy+300))) #touching ->
     
     screen.fill((255,255,255)) #fill screen
     
@@ -110,13 +112,25 @@ while True: #level loop
       velx=0 #stop
     
     if not tbottom: #if bottom not touching ground
-      vely-=2 #go down    
-    else: #if bottom touching ground
+      vely-=2 #go down
+    
+    if tbottom and not tside: #if bottom touching ground
       vely=0 #stop
       up() #go up
     
-    if ttop and not tbottom: #if up touching but not down touching
+    if tbottom and tside:
+      vely=0
+    
+    if ttop and not tbottom and not tside: #if up touching but not down touching
       vely=-vely #reverse
+
+    if tside:
+      velx=-velx
+
+    if fastleft:
+      velx-=10
+    if fastright:
+      velx+=10
 
     keys=pygame.key.get_pressed() #the pressed keys
     if keys[pygame.K_UP] and tbottom: #if pressing up and touching bottom
@@ -142,7 +156,7 @@ while True: #level loop
     if win: #if win level
       break #break
     
-    if lava: #if touch lava
+    if lava or keys[pygame.K_r]: #if touch lava
       reset() #reset level
     
     pygame.display.flip() #flip screen
