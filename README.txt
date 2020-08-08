@@ -1,0 +1,1 @@
+This is a game known as a scrolling platformer, and it's basically a platformer that only moves the background.

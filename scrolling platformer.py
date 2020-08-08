@@ -1,7 +1,9 @@
-import pygame,sys,time,os
+import sys,time,os
 
 os.environ['PYGAME_HIDE_SUPPORT_PROMPT']="hide"
 pygame.init()
+
+import pygame
 
 screen=pygame.display.set_mode([700,700])
 pygame.display.set_caption("Scrolling platformer")
