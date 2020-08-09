@@ -57,6 +57,7 @@ def loadlevel(): #load the level
     input("YOU WIN") #print you win
     
     sys.exit() #exit
+
 def reset(): #reset position and speed
   global screenposx,screenposy,velx,vely #global variables
   
@@ -161,7 +162,7 @@ while True: #level loop
     if win: #if win level
       break #break
     
-    if lava or keys[pygame.K_r]: #if touch lava
+    if lava or keys[pygame.K_r] or screenposy>=3700: #if touch lava
       reset() #reset level
     
     pygame.display.flip() #flip screen
