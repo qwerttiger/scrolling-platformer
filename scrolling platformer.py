@@ -77,7 +77,7 @@ def down(): #go down
   global screenposy #global y position
   
   while bool(groundmask.overlap_area(top,(screenposx+300,screenposy+299))): #while touching ground
-    screenposy+=1 #go up
+    screenposy+=1 #go down
 
 while True: #level loop
   loadlevel() #load the level
@@ -120,14 +120,8 @@ while True: #level loop
     else: #going slow
       velx=0 #stop
     
-    if not tbottom and not water: #if bottom not touching ground
-      vely-=2 #go down
-
-    if water:
-      vely=0
-    
-    if not tbottom and water:
-      screenposy+=2
+    if not tbottom and not water: #if bottom not touching ground and not touching water
+      vely-=2 #accelerate down
     
     if tbottom and not ttop: #if bottom touching ground
       vely=0 #stop
@@ -147,9 +141,11 @@ while True: #level loop
 
     keys=pygame.key.get_pressed() #the pressed keys
     if keys[pygame.K_UP] and tbottom and not water: #if pressing up and touching bottom
-      vely+=30 #go up
-    if keys[pygame.K_UP] and water:
-      screenposy-=4
+      vely+=30 #jump
+    if keys[pygame.K_UP] and water: #if going up in water
+      screenposy-=4 #go up
+    if not keys[pygame.K_UP] and water: #if not going up in water
+      screenposy+=2 #go down
     if keys[pygame.K_LEFT]: #if going left
       velx-=3 #go left
       lorr=False #face left
