@@ -94,6 +94,7 @@ while True: #level loop
     jumpy=bool(jumpymask.overlap_area(playermask,(screenposx+300,screenposy+300))) #touching jumpy
     fastleft=bool(fastleftmask.overlap_area(playermask,(screenposx+300,screenposy+300))) #touching <-
     fastright=bool(fastrightmask.overlap_area(playermask,(screenposx+300,screenposy+300))) #touching ->
+    water=bool(watermask.overlap_area(playermask,(screenposx+300,screenposy+300))) #touching water
     
     screen.fill((255,255,255)) #fill screen
     
@@ -119,8 +120,14 @@ while True: #level loop
     else: #going slow
       velx=0 #stop
     
-    if not tbottom: #if bottom not touching ground
+    if not tbottom and not water: #if bottom not touching ground
       vely-=2 #go down
+
+    if water:
+      vely=0
+    
+    if not tbottom and water:
+      screenposy+=2
     
     if tbottom and not ttop: #if bottom touching ground
       vely=0 #stop
@@ -139,8 +146,10 @@ while True: #level loop
       velx+=30
 
     keys=pygame.key.get_pressed() #the pressed keys
-    if keys[pygame.K_UP] and tbottom: #if pressing up and touching bottom
+    if keys[pygame.K_UP] and tbottom and not water: #if pressing up and touching bottom
       vely+=30 #go up
+    if keys[pygame.K_UP] and water:
+      screenposy-=4
     if keys[pygame.K_LEFT]: #if going left
       velx-=3 #go left
       lorr=False #face left
