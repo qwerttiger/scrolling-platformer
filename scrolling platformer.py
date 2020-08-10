@@ -97,19 +97,19 @@ def startthing(): #the thing at the start
   pygame.draw.line(screen,(0,0,0),(336,375),(379,350))
   pygame.draw.rect(screen,(0,0,0),pygame.Rect((100,300),(100,100)),1)
   screen.blit(playerr,(125,325)) #draw player
-
+  
   pygame.display.flip() #flip screen
   keep_going=True #set keep_going
-
+  
   while keep_going: #while you keep going
     for event in pygame.event.get(): #for every event
       if event.type==pygame.QUIT: #if quit
         pygame.quit() #quit
         sys.exit() #exit
-
+      
       if event.type==pygame.MOUSEBUTTONDOWN and pygame.mouse.get_pos()[0]>=300 and pygame.mouse.get_pos()[0]<=400 and pygame.mouse.get_pos()[1]>=300 and pygame.mouse.get_pos()[1]<=400: #if you press play
         keep_going=False #go to the main game
-
+      
       if event.type==pygame.MOUSEBUTTONDOWN and pygame.mouse.get_pos()[0]>=100 and pygame.mouse.get_pos()[0]<=300 and pygame.mouse.get_pos()[1]>=300 and pygame.mouse.get_pos()[1]<=400:
         #draw the screen
         screen.fill((255,255,255))
@@ -120,7 +120,9 @@ def startthing(): #the thing at the start
         pygame.draw.rect(screen,(255,255,0),pygame.Rect((375,325),(50,50)))
         pygame.draw.rect(screen,(255,0,255),pygame.Rect((425,325),(50,50)))
         pygame.draw.rect(screen,(0,255,255),pygame.Rect((475,325),(50,50)))
+        
         pygame.display.flip() #flip display
+        
         kep_going=True #lol keep_going but... yeah
         while kep_going: #while keep going
           for event in pygame.event.get(): #for every event
@@ -129,56 +131,56 @@ def startthing(): #the thing at the start
               sys.exit() #exit
             if event.type==pygame.MOUSEBUTTONDOWN: #if you click
               pos=pygame.mouse.get_pos() #you find the position of the mouse
-
+              
               if pos[1]>=325 and pos[1]<=375: #if you click in the region horizontal region where it works
                 if pos[0]>=175 and pos[0]<225: #if you click on black
                   for posx in range(50): #for every column
                     for posy in range(50): #for every pixel in that column
                       if playerr.get_at((posx,posy)) not in [(255,255,255),(254,254,254)]: #if it is not blank
                         playerr.set_at((posx,posy),(0,0,0)) #set that pixel to black
+                
                 #the same for the other ones but with different colours
-
                 if pos[0]>=225 and pos[0]<275:
                   for posx in range(50):
                     for posy in range(50):
                       if playerr.get_at((posx,posy)) not in [(255,255,255),(254,254,254)]:
                         playerr.set_at((posx,posy),(255,0,0))
-
+                
                 if pos[0]>=275 and pos[0]<325:
                   for posx in range(50):
                     for posy in range(50):
                       if playerr.get_at((posx,posy)) not in [(255,255,255),(254,254,254)]:
                         playerr.set_at((posx,posy),(0,255,0))
-
+                
                 if pos[0]>=325 and pos[0]<375:
                   for posx in range(50):
                     for posy in range(50):
                       if playerr.get_at((posx,posy)) not in [(255,255,255),(254,254,254)]:
                         playerr.set_at((posx,posy),(0,0,255))
-
+                
                 if pos[0]>=375 and pos[0]<425:
                   for posx in range(50):
                     for posy in range(50):
                       if playerr.get_at((posx,posy)) not in [(255,255,255),(254,254,254)]:
                         playerr.set_at((posx,posy),(255,255,0))
-
+                
                 if pos[0]>=425 and pos[0]<475:
                   for posx in range(50):
                     for posy in range(50):
                       if playerr.get_at((posx,posy)) not in [(255,255,255),(254,254,254)]:
                         playerr.set_at((posx,posy),(255,0,255))
-
+                
                 if pos[0]>=475 and pos[0]<525:
                   for posx in range(50):
                     for posy in range(50):
                       if playerr.get_at((posx,posy)) not in [(255,255,255),(254,254,254)]:
                         playerr.set_at((posx,posy),(0,255,255))
-
+                
                 playerl=pygame.transform.flip(playerr,True,False) #set the new playerl
                 
                 for x in [playerr,playerl]: #for everything in this list
                   x.set_colorkey((255,255,255)) #set the colourkey
-
+              
               #draw the things
               screen.fill((255,255,255))
               drawtext("elements | a platformer",(0,0,0),50)
@@ -188,7 +190,7 @@ def startthing(): #the thing at the start
               pygame.draw.line(screen,(0,0,0),(336,375),(379,350))
               pygame.draw.rect(screen,(0,0,0),pygame.Rect((100,300),(100,100)),1)
               screen.blit(playerr,(125,325))
-
+              
               kep_going=False #exit this loop
               pygame.display.flip() #flip screen
 
@@ -228,7 +230,7 @@ while True: #level loop
       velx=0 #freeze speed
     
     screen.blit(levelpic,(-screenposx,-screenposy)) #draw the background
-
+    
     #friction
     if velx>=2: #going right
       velx-=2 #slow down
@@ -243,19 +245,19 @@ while True: #level loop
     if tbottom and not ttop: #if bottom touching ground
       vely=0 #stop
       up() #go up
-
+    
     if ttop and not tbottom: #if up touching but not down touching
       vely=0 #stop
       down()
-
+    
     if tside:
       velx=-velx
-
+    
     if fastleft:
       velx-=30
     if fastright:
       velx+=30
-
+    
     keys=pygame.key.get_pressed() #the pressed keys
     if keys[pygame.K_UP] and tbottom and not water: #if pressing up and touching bottom
       vely+=30 #jump
@@ -286,7 +288,7 @@ while True: #level loop
     
     if lava or keys[pygame.K_r] or screenposy>=3700: #if touch lava
       reset() #reset level
-
+    
     if keys[pygame.K_p]:
       startthing()
     
