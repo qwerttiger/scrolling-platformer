@@ -11,10 +11,15 @@ pygame.display.set_caption("Scrolling platformer") #set caption
 playerr=pygame.image.load("C:/Users/Rainbow/Documents/GitHub/scrolling-platformer/player.png") #load file
 playerr.set_colorkey((255,255,255)) #set colourkey
 playerl=pygame.transform.flip(playerr,True,False) #make player left
+playersr=pygame.transform.scale(playerr,(25,25))
+playersl=pygame.transform.scale(playerl,(25,25))
 
 bottom=pygame.mask.from_threshold(pygame.image.load("C:/Users/Rainbow/Documents/GitHub/scrolling-platformer/bottom.png"),(0,0,0),(1,1,1)) #bottom mask
 side=pygame.mask.from_threshold(pygame.image.load("C:/Users/Rainbow/Documents/GitHub/scrolling-platformer/side.png"),(0,0,0),(1,1,1)) #side mask
 top=pygame.mask.from_threshold(pygame.image.load("C:/Users/Rainbow/Documents/GitHub/scrolling-platformer/top.png"),(0,0,0),(1,1,1)) #top mask
+bottoms=pygame.mask.from_threshold(pygame.image.load("C:/Users/Rainbow/Documents/GitHub/scrolling-platformer/bottomsmall.png"),(0,0,0),(1,1,1)) #bottom small mask
+sides=pygame.mask.from_threshold(pygame.image.load("C:/Users/Rainbow/Documents/GitHub/scrolling-platformer/sidesmall.png"),(0,0,0),(1,1,1)) #side small mask
+tops=pygame.mask.from_threshold(pygame.image.load("C:/Users/Rainbow/Documents/GitHub/scrolling-platformer/topsmall.png"),(0,0,0),(1,1,1)) #top small mask
 
 levelpic=None #set the level picture
 
@@ -34,6 +39,7 @@ velx=0 #x speed
 vely=0 #y speed
 lorr=True #left or right
 level=1 #level
+sorb=True
 
 def loadlevel(): #load the level
   try: #try to
