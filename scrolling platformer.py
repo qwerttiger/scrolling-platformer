@@ -14,9 +14,9 @@ playerl=pygame.transform.flip(playerr,True,False) #make player left
 playersr=pygame.transform.scale(playerr,(25,25))
 playersl=pygame.transform.scale(playerl,(25,25))
 
-bottom=pygame.mask.from_threshold(pygame.image.load("C:/Users/Rainbow/Documents/GitHub/scrolling-platformer/bottom.png"),(0,0,0),(1,1,1)) #bottom mask
-side=pygame.mask.from_threshold(pygame.image.load("C:/Users/Rainbow/Documents/GitHub/scrolling-platformer/side.png"),(0,0,0),(1,1,1)) #side mask
-top=pygame.mask.from_threshold(pygame.image.load("C:/Users/Rainbow/Documents/GitHub/scrolling-platformer/top.png"),(0,0,0),(1,1,1)) #top mask
+bottomb=pygame.mask.from_threshold(pygame.image.load("C:/Users/Rainbow/Documents/GitHub/scrolling-platformer/bottom.png"),(0,0,0),(1,1,1)) #bottom mask
+sideb=pygame.mask.from_threshold(pygame.image.load("C:/Users/Rainbow/Documents/GitHub/scrolling-platformer/side.png"),(0,0,0),(1,1,1)) #side mask
+topb=pygame.mask.from_threshold(pygame.image.load("C:/Users/Rainbow/Documents/GitHub/scrolling-platformer/top.png"),(0,0,0),(1,1,1)) #top mask
 bottoms=pygame.mask.from_threshold(pygame.image.load("C:/Users/Rainbow/Documents/GitHub/scrolling-platformer/bottomsmall.png"),(0,0,0),(1,1,1)) #bottom small mask
 sides=pygame.mask.from_threshold(pygame.image.load("C:/Users/Rainbow/Documents/GitHub/scrolling-platformer/sidesmall.png"),(0,0,0),(1,1,1)) #side small mask
 tops=pygame.mask.from_threshold(pygame.image.load("C:/Users/Rainbow/Documents/GitHub/scrolling-platformer/topsmall.png"),(0,0,0),(1,1,1)) #top small mask
@@ -40,7 +40,20 @@ vely=0 #y speed
 lorr=True #left or right
 level=1 #level
 sorb=True
+top=None
+side=None
+bottom=None
 
+def setmask():
+  global top,side,bottom
+  if sorb:
+    top=topb
+    side=sideb
+    bottom=bottomb
+  else:
+    top=tops
+    side=sides
+    bottom=bottoms
 def loadlevel(): #load the level
   try: #try to
     global levelpic,groundmask,lavamask,jumpymask,fastleftmask,fastrightmask,watermask,shrinkmask,normalmask,winmask #make all of these global
@@ -89,7 +102,7 @@ def drawtext(text,colour,size=30,pos=(350,100)): #draws a single piece of text
   screen.blit(pygame.font.SysFont("arial",size).render(text,True,colour),(pos[0]-round(pygame.font.SysFont("arial",size).render(text,True,colour).get_width()/2),pos[1]-pygame.font.SysFont("arial",size).render(text,True,colour).get_height()/2))
 
 def startthing(): #the thing at the start
-  global playerr,playerl #set everything to be global
+  global playerr,playerl,playersr,playersl #set everything to be global
   
   ctime=time.time() #current time
   
@@ -183,13 +196,11 @@ def startthing(): #the thing at the start
                         playerr.set_at((posx,posy),(0,255,255))
                 
                 playerl=pygame.transform.flip(playerr,True,False) #set the new playerl
-                
-                for x in [playerr,playerl]: #for everything in this list
-                  x.set_colorkey((255,255,255)) #set the colourkey
-              
+                playersr=pygame.transform.scale(playerr,(25,25))
+                playersl=pygame.transform.scale(playerl,(25,25))
               #draw the things
               screen.fill((255,255,255))
-              drawtext("elements | a platformer",(0,0,0),50)
+              drawtext("scrolling platformer",(0,0,0),50)
               pygame.draw.rect(screen,(0,0,0),pygame.Rect((300,300),(100,100)),1)
               pygame.draw.line(screen,(0,0,0),(336,325),(336,375))
               pygame.draw.line(screen,(0,0,0),(336,325),(379,350))
@@ -209,6 +220,7 @@ while True: #level loop
   reset() #reset position
   
   while True:
+    setmask()
     #bottom, side, top touching ground
     tbottom=bool(groundmask.overlap_area(bottom,(screenposx+300,screenposy+300)))
     tside=bool(groundmask.overlap_area(side,(screenposx+299,screenposy+300)))
@@ -283,11 +295,17 @@ while True: #level loop
     
     screenposx+=velx #change by x velocity
     screenposy-=vely #change by y velocity
-    
-    if lorr: #if going right
-      screen.blit(playerr,(300,300)) #draw character
-    else: #if left
-      screen.blit(playerl,(300,300)) #draw character
+
+    if sorb:
+      if lorr: #if going right
+        screen.blit(playerr,(300,300)) #draw character
+      else: #if left
+        screen.blit(playerl,(300,300)) #draw character
+    else:
+      if lorr: #if going right
+        screen.blit(playersr,(300,300)) #draw character
+      else: #if left
+        screen.blit(playersl,(300,300)) #draw character
     
     if win: #if win level
       break #break
