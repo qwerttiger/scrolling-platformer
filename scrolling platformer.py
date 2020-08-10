@@ -324,6 +324,7 @@ while True: #level loop
     if keys[pygame.K_p]:
       startthing()
     
+    screen.blit(pygame.font.SysFont("arial",30).render("level: "+str(level),True,(128,128,128)),(0,0))
     pygame.display.flip() #flip screen
     
     time.sleep(0.02) #slow down game
