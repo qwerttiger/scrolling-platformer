@@ -85,6 +85,7 @@ def reset(): #reset position and speed
   
   velx=0 #x speed=0
   vely=0 #y speed=0
+  sorb=True
 
 def up(): #go up
   global screenposy #global y position
@@ -232,6 +233,8 @@ while True: #level loop
     fastleft=bool(fastleftmask.overlap_area(playermask,(screenposx+300,screenposy+300))) #touching <-
     fastright=bool(fastrightmask.overlap_area(playermask,(screenposx+300,screenposy+300))) #touching ->
     water=bool(watermask.overlap_area(playermask,(screenposx+300,screenposy+300))) #touching water
+    shrink=bool(shrinkmask.overlap_area(playermask,(screenposx+300,screenposy+300))) #touching shrink
+    normal=bool(normalmask.overlap_area(playermask,(screenposx+300,screenposy+300))) #touching normal
     
     screen.fill((255,255,255)) #fill screen
     
@@ -275,6 +278,11 @@ while True: #level loop
       velx-=30
     if fastright:
       velx+=30
+
+    if shrink:
+      sorb=False
+    if normal:
+      sorb=True
     
     keys=pygame.key.get_pressed() #the pressed keys
     if keys[pygame.K_UP] and tbottom and not water: #if pressing up and touching bottom
