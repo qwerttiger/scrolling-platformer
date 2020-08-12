@@ -11,8 +11,8 @@ pygame.display.set_caption("Scrolling platformer") #set caption
 playerr=pygame.image.load("C:/Users/Rainbow/Documents/GitHub/scrolling-platformer/player.png") #load file
 playerr.set_colorkey((255,255,255)) #set colourkey
 playerl=pygame.transform.flip(playerr,True,False) #make player left
-playersr=pygame.transform.scale(playerr,(25,25))
-playersl=pygame.transform.scale(playerl,(25,25))
+playersr=pygame.transform.scale(playerr,(25,25)) #small player right
+playersl=pygame.transform.scale(playerl,(25,25)) #small player left
 
 bottomb=pygame.mask.from_threshold(pygame.image.load("C:/Users/Rainbow/Documents/GitHub/scrolling-platformer/bottom.png"),(0,0,0),(1,1,1)) #bottom mask
 sideb=pygame.mask.from_threshold(pygame.image.load("C:/Users/Rainbow/Documents/GitHub/scrolling-platformer/side.png"),(0,0,0),(1,1,1)) #side mask
@@ -33,27 +33,32 @@ shrinkmask=None #small mask
 normalmask=None #big mask
 winmask=None #win mask
 
-playermask=pygame.mask.Mask((50,50),True) #player mask
+playermaskb=pygame.mask.Mask((50,50),True) #player mask
+playermasks=pygame.mask.Mask((25,250),True) #player mask
 
 velx=0 #x speed
 vely=0 #y speed
 lorr=True #left or right
 level=1 #level
-sorb=True
-top=None
-side=None
-bottom=None
+big=True #small or big
+top=None #top mask
+side=None #side mask
+bottom=None #bottom mask
+deaths=0 #how many times you died
+playermask=None #the playermask
 
-def setmask():
-  global top,side,bottom
-  if sorb:
-    top=topb
-    side=sideb
-    bottom=bottomb
-  else:
-    top=tops
-    side=sides
-    bottom=bottoms
+def setmask(): #define setmask
+  global top,side,bottom,playermask #make these things global
+  if big: #if big
+    top=topb #set top mask
+    side=sideb #set side mask
+    bottom=bottomb #set bottom mask
+    playermask=playermaskb #set playermask
+  else: #if small
+    top=tops #set top mask
+    side=sides #set side mask
+    bottom=bottoms #set bottom mask
+    playermask=playermasks #set playermask
 def loadlevel(): #load the level
   try: #try to
     global levelpic,groundmask,lavamask,jumpymask,fastleftmask,fastrightmask,watermask,shrinkmask,normalmask,winmask #make all of these global
@@ -85,7 +90,7 @@ def reset(): #reset position and speed
   
   velx=0 #x speed=0
   vely=0 #y speed=0
-  sorb=True
+  big=True #make you big
 
 def up(): #go up
   global screenposy #global y position
@@ -100,12 +105,10 @@ def down(): #go down
     screenposy+=1 #go down
 
 def drawtext(text,colour,size=30,pos=(350,100)): #draws a single piece of text
-  screen.blit(pygame.font.SysFont("arial",size).render(text,True,colour),(pos[0]-round(pygame.font.SysFont("arial",size).render(text,True,colour).get_width()/2),pos[1]-pygame.font.SysFont("arial",size).render(text,True,colour).get_height()/2))
+  screen.blit(pygame.font.SysFont("arial",size).render(text,True,colour),(pos[0]-round(pygame.font.SysFont("arial",size).render(text,True,colour).get_width()/2),pos[1]-pygame.font.SysFont("arial",size).render(text,True,colour).get_height()/2)) #draw it
 
 def startthing(): #the thing at the start
   global playerr,playerl,playersr,playersl #set everything to be global
-  
-  ctime=time.time() #current time
   
   screen.fill((255,255,255)) #fill screen
   drawtext("scrolling platformer",(0,0,0),50) #draw text
@@ -280,9 +283,9 @@ while True: #level loop
       velx+=30
 
     if shrink:
-      sorb=False
+      big=False
     if normal:
-      sorb=True
+      big=True
     
     keys=pygame.key.get_pressed() #the pressed keys
     if keys[pygame.K_UP] and tbottom and not water: #if pressing up and touching bottom
@@ -304,7 +307,7 @@ while True: #level loop
     screenposx+=velx #change by x velocity
     screenposy-=vely #change by y velocity
 
-    if sorb:
+    if big:
       if lorr: #if going right
         screen.blit(playerr,(300,300)) #draw character
       else: #if left
@@ -320,11 +323,13 @@ while True: #level loop
     
     if lava or keys[pygame.K_r] or screenposy>=3700: #if touch lava
       reset() #reset level
+      if not keys[pygame.K_r]:
+        deaths+=1
     
     if keys[pygame.K_p]:
       startthing()
     
-    screen.blit(pygame.font.SysFont("arial",30).render("level: "+str(level),True,(128,128,128)),(0,0))
+    screen.blit(pygame.font.SysFont("arial",30).render("level: "+str(level)+" deaths: "+str(deaths),True,(128,128,128)),(0,0))
     pygame.display.flip() #flip screen
     
     time.sleep(0.02) #slow down game
