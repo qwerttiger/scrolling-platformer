@@ -32,6 +32,7 @@ watermask=None #water mask
 shrinkmask=None #small mask
 normalmask=None #big mask
 winmask=None #win mask
+gravitymask=None #gravity mask
 
 playermaskb=pygame.mask.Mask((50,50),True) #player mask
 playermasks=pygame.mask.Mask((25,250),True) #player mask
@@ -46,6 +47,8 @@ side=None #side mask
 bottom=None #bottom mask
 deaths=0 #how many times you died
 playermask=None #the playermask
+gravity=1
+cang=True
 
 def setmask(): #define setmask
   global top,side,bottom,playermask #make these things global
@@ -61,7 +64,7 @@ def setmask(): #define setmask
     playermask=playermasks #set playermask
 def loadlevel(): #load the level
   try: #try to
-    global levelpic,groundmask,lavamask,jumpymask,fastleftmask,fastrightmask,watermask,shrinkmask,normalmask,winmask #make all of these global
+    global levelpic,groundmask,lavamask,jumpymask,fastleftmask,fastrightmask,watermask,shrinkmask,normalmask,winmask,gravitymask #make all of these global
     
     levelpic=pygame.image.load(f"C:/Users/Rainbow/Documents/GitHub/scrolling-platformer/levels/{level}.png") #level picture
     
@@ -75,6 +78,7 @@ def loadlevel(): #load the level
     shrinkmask=pygame.mask.from_threshold(levelpic,(0,100,0),(1,1,1))
     normalmask=pygame.mask.from_threshold(levelpic,(0,0,100),(1,1,1))
     winmask=pygame.mask.from_threshold(levelpic,(255,255,0),(1,1,1))
+    gravitymask=pygame.mask.from_threshold(levelpic,(255,128,0),(1,1,1))
   except: #if the file does not exist, which means you won
     pygame.quit() #quit pygame
     
@@ -83,7 +87,7 @@ def loadlevel(): #load the level
     sys.exit() #exit
 
 def reset(): #reset position and speed
-  global screenposx,screenposy,velx,vely #global variables
+  global screenposx,screenposy,velx,vely,gravity,big #global variables
   
   screenposx=-300 #set position to be -300
   screenposy=3100 #and 3100
@@ -91,6 +95,7 @@ def reset(): #reset position and speed
   velx=0 #x speed=0
   vely=0 #y speed=0
   big=True #make you big
+  gravity=1
 
 def up(): #go up
   global screenposy #global y position
@@ -238,6 +243,7 @@ while True: #level loop
     water=bool(watermask.overlap_area(playermask,(screenposx+300,screenposy+300))) #touching water
     shrink=bool(shrinkmask.overlap_area(playermask,(screenposx+300,screenposy+300))) #touching shrink
     normal=bool(normalmask.overlap_area(playermask,(screenposx+300,screenposy+300))) #touching normal
+    grâvity=bool(gravitymask.overlap_area(playermask,(screenposx+300,screenposy+300))) #touching normal
     
     screen.fill((255,255,255)) #fill screen
     
@@ -263,8 +269,7 @@ while True: #level loop
     else: #going slow
       velx=0 #stop
     
-    if not tbottom and not water: #if bottom not touching ground and not touching water
-      vely-=2 #accelerate down
+
     
     if tbottom and not ttop: #if bottom touching ground
       vely=0 #stop
@@ -273,6 +278,9 @@ while True: #level loop
     if ttop and not tbottom: #if up touching but not down touching
       vely=0 #stop
       down()
+
+    if ((not tbottom and gravity==1) or (not ttop and gravity==-1)) and not water: #if bottom not touching ground and not touching water
+      vely-=2*gravity #accelerate down
     
     if tside:
       velx=-velx
@@ -282,18 +290,25 @@ while True: #level loop
     if fastright:
       velx+=30
 
+    if grâvity and cang:
+      gravity=-gravity
+    if grâvity:
+      cang=False
+    else:
+      cang=True
+
     if shrink:
       big=False
     if normal:
       big=True
     
     keys=pygame.key.get_pressed() #the pressed keys
-    if keys[pygame.K_UP] and tbottom and not water: #if pressing up and touching bottom
-      vely+=30 #jump
+    if keys[pygame.K_UP] and ((tbottom and gravity==1) or (ttop and gravity==-1)) and not water: #if pressing up and touching bottom
+      vely+=30*gravity #jump
     if keys[pygame.K_UP] and water: #if going up in water
-      screenposy-=4 #go up
+      screenposy-=4*gravity #go up
     if not keys[pygame.K_UP] and water: #if not going up in water
-      screenposy+=2 #go down
+      screenposy+=2*gravity #go down
     if keys[pygame.K_LEFT]: #if going left
       velx-=3 #go left
       lorr=False #face left
@@ -302,7 +317,7 @@ while True: #level loop
       lorr=True #face right
     
     if jumpy: #if touching jumpy
-      vely+=20 #jump
+      vely+=20*gravity #jump
     
     screenposx+=velx #change by x velocity
     screenposy-=vely #change by y velocity
@@ -321,7 +336,7 @@ while True: #level loop
     if win: #if win level
       break #break
     
-    if lava or keys[pygame.K_r] or screenposy>=3700: #if touch lava
+    if lava or keys[pygame.K_r] or (screenposy>=3700 and gravity==1) or (screenposy<=0 and gravity==-1): #if touch lava
       reset() #reset level
       if not keys[pygame.K_r]:
         deaths+=1
