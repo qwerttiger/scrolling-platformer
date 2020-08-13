@@ -13,6 +13,10 @@ playerr.set_colorkey((255,255,255)) #set colourkey
 playerl=pygame.transform.flip(playerr,True,False) #make player left
 playersr=pygame.transform.scale(playerr,(25,25)) #small player right
 playersl=pygame.transform.scale(playerl,(25,25)) #small player left
+playergl=pygame.transform.flip(playerl,False,True) #make player left
+playergr=pygame.transform.flip(playerr,False,True) #make player left
+playergsl=pygame.transform.flip(playersl,False,True) #make player left
+playergsr=pygame.transform.flip(playersr,False,True) #make player left
 
 bottomb=pygame.mask.from_threshold(pygame.image.load("C:/Users/Rainbow/Documents/GitHub/scrolling-platformer/bottom.png"),(0,0,0),(1,1,1)) #bottom mask
 sideb=pygame.mask.from_threshold(pygame.image.load("C:/Users/Rainbow/Documents/GitHub/scrolling-platformer/side.png"),(0,0,0),(1,1,1)) #side mask
@@ -40,7 +44,7 @@ playermasks=pygame.mask.Mask((25,25),True) #player mask small
 velx=0 #x speed
 vely=0 #y speed
 lorr=True #left or right
-level=8 #level
+level=1 #level
 big=True #small or big
 top=None #top mask
 side=None #side mask
@@ -318,17 +322,28 @@ while True: #level loop
     
     screenposx+=velx #change by x velocity
     screenposy-=vely #change by y velocity
-
-    if big:
-      if lorr: #if going right
-        screen.blit(playerr,(300,300)) #draw character
-      else: #if left
-        screen.blit(playerl,(300,300)) #draw character
-    else:
-      if lorr: #if going right
-        screen.blit(playersr,(300,300)) #draw character
-      else: #if left
-        screen.blit(playersl,(300,300)) #draw character
+    if gravity==1: #if going normal
+      if big: #if you are big
+        if lorr: #if going right
+          screen.blit(playerr,(300,300)) #draw character
+        else: #if left
+          screen.blit(playerl,(300,300)) #draw character
+      else: #if you are small
+        if lorr: #if going right
+          screen.blit(playersr,(325,325)) #draw character
+        else: #if left
+          screen.blit(playersl,(325,325)) #draw character
+    else: #if flipped gravity
+      if big: #if you are big
+        if lorr: #if going right
+          screen.blit(playergr,(300,300)) #draw character
+        else: #if left
+          screen.blit(playergl,(300,300)) #draw character
+      else: #if you are small
+        if lorr: #if going right
+          screen.blit(playergsr,(325,325)) #draw character
+        else: #if left
+          screen.blit(playergsl,(325,325)) #draw character
     
     if win: #if win level
       break #break
