@@ -35,12 +35,12 @@ winmask=None #win mask
 gravitymask=None #gravity mask
 
 playermaskb=pygame.mask.Mask((50,50),True) #player mask
-playermasks=pygame.mask.Mask((25,250),True) #player mask
+playermasks=pygame.mask.Mask((25,25),True) #player mask
 
 velx=0 #x speed
 vely=0 #y speed
 lorr=True #left or right
-level=1 #level
+level=8 #level
 big=True #small or big
 top=None #top mask
 side=None #side mask
@@ -290,17 +290,14 @@ while True: #level loop
     if fastright:
       velx+=30
 
-    if grâvity and cang:
-      gravity=-gravity
-    if grâvity:
-      cang=False
-    else:
-      cang=True
+    if grâvity and cang: #if you are touching gracity and you can switch gravity
+      gravity=-gravity #reverse gravity
+    cang=not grâvity #set cang to not grâvity
 
-    if shrink:
-      big=False
-    if normal:
-      big=True
+    if shrink: #if you are touching shrink
+      big=False #become small
+    if normal: #if you are touching normal
+      big=True #become big
     
     keys=pygame.key.get_pressed() #the pressed keys
     if keys[pygame.K_UP] and ((tbottom and gravity==1) or (ttop and gravity==-1)) and not water: #if pressing up and touching bottom
@@ -338,13 +335,14 @@ while True: #level loop
     
     if lava or keys[pygame.K_r] or (screenposy>=3700 and gravity==1) or (screenposy<=0 and gravity==-1): #if touch lava
       reset() #reset level
-      if not keys[pygame.K_r]:
-        deaths+=1
+      if not keys[pygame.K_r]: #if you either fall of the screen or touch lava
+        deaths+=1 #add 1 to deaths
     
-    if keys[pygame.K_p]:
-      startthing()
+    if keys[pygame.K_p]: #if you press pause
+      startthing() #do the start thing
     
-    screen.blit(pygame.font.SysFont("arial",30).render("level: "+str(level)+" deaths: "+str(deaths),True,(128,128,128)),(0,0))
+    screen.blit(pygame.font.SysFont("arial",30).render("level: "+str(level)+" deaths: "+str(deaths),True,(128,128,128)),(0,0)) #draw level
+    
     pygame.display.flip() #flip screen
     
     time.sleep(0.02) #slow down game
