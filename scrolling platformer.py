@@ -34,8 +34,8 @@ normalmask=None #big mask
 winmask=None #win mask
 gravitymask=None #gravity mask
 
-playermaskb=pygame.mask.Mask((50,50),True) #player mask
-playermasks=pygame.mask.Mask((25,25),True) #player mask
+playermaskb=pygame.mask.Mask((50,50),True) #player mask big
+playermasks=pygame.mask.Mask((25,25),True) #player mask small
 
 velx=0 #x speed
 vely=0 #y speed
@@ -47,8 +47,8 @@ side=None #side mask
 bottom=None #bottom mask
 deaths=0 #how many times you died
 playermask=None #the playermask
-gravity=1
-cang=True
+gravity=1 #is gravity up or down?
+cang=True #can switch gravity
 
 def setmask(): #define setmask
   global top,side,bottom,playermask #make these things global
@@ -95,7 +95,7 @@ def reset(): #reset position and speed
   velx=0 #x speed=0
   vely=0 #y speed=0
   big=True #make you big
-  gravity=1
+  gravity=1 #set gravity to normal
 
 def up(): #go up
   global screenposy #global y position
