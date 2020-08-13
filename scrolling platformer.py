@@ -13,10 +13,10 @@ playerr.set_colorkey((255,255,255)) #set colourkey
 playerl=pygame.transform.flip(playerr,True,False) #make player left
 playersr=pygame.transform.scale(playerr,(25,25)) #small player right
 playersl=pygame.transform.scale(playerl,(25,25)) #small player left
-playergl=pygame.transform.flip(playerl,False,True) #make player left
-playergr=pygame.transform.flip(playerr,False,True) #make player left
-playergsl=pygame.transform.flip(playersl,False,True) #make player left
-playergsr=pygame.transform.flip(playersr,False,True) #make player left
+playergl=pygame.transform.flip(playerl,False,True) #make player upside down left
+playergr=pygame.transform.flip(playerr,False,True) #make player upside down right
+playergsl=pygame.transform.flip(playersl,False,True) #make player upside down small left
+playergsr=pygame.transform.flip(playersr,False,True) #make player upside down small right
 
 bottomb=pygame.mask.from_threshold(pygame.image.load("C:/Users/Rainbow/Documents/GitHub/scrolling-platformer/bottom.png"),(0,0,0),(1,1,1)) #bottom mask
 sideb=pygame.mask.from_threshold(pygame.image.load("C:/Users/Rainbow/Documents/GitHub/scrolling-platformer/side.png"),(0,0,0),(1,1,1)) #side mask
@@ -148,7 +148,7 @@ def startthing(): #the thing at the start
         pygame.draw.rect(screen,(0,0,0),pygame.Rect((175,325),(50,50)))
         pygame.draw.rect(screen,(255,0,0),pygame.Rect((225,325),(50,50)))
         pygame.draw.rect(screen,(0,255,0),pygame.Rect((275,325),(50,50)))
-        pygame.draw.rect(screen,(0,0,255),pygame.Rect((325,325),(50,50)))
+        pygame.draw.rect(screen,(0,0,255),pygame.Rect((300,300),(50,50)))
         pygame.draw.rect(screen,(255,255,0),pygame.Rect((375,325),(50,50)))
         pygame.draw.rect(screen,(255,0,255),pygame.Rect((425,325),(50,50)))
         pygame.draw.rect(screen,(0,255,255),pygame.Rect((475,325),(50,50)))
@@ -211,6 +211,10 @@ def startthing(): #the thing at the start
                 playerl=pygame.transform.flip(playerr,True,False) #set the new playerl
                 playersr=pygame.transform.scale(playerr,(25,25))
                 playersl=pygame.transform.scale(playerl,(25,25))
+                playergl=pygame.transform.flip(playerl,False,True) #make player upside down left
+                playergr=pygame.transform.flip(playerr,False,True) #make player upside down right
+                playergsl=pygame.transform.flip(playersl,False,True) #make player upside down small left
+                playergsr=pygame.transform.flip(playersr,False,True) #make player upside down small right
               #draw the things
               screen.fill((255,255,255))
               drawtext("scrolling platformer",(0,0,0),50)
@@ -273,8 +277,6 @@ while True: #level loop
     else: #going slow
       velx=0 #stop
     
-
-    
     if tbottom and not ttop: #if bottom touching ground
       vely=0 #stop
       up() #go up
@@ -330,9 +332,9 @@ while True: #level loop
           screen.blit(playerl,(300,300)) #draw character
       else: #if you are small
         if lorr: #if going right
-          screen.blit(playersr,(325,325)) #draw character
+          screen.blit(playersr,(300,300)) #draw character
         else: #if left
-          screen.blit(playersl,(325,325)) #draw character
+          screen.blit(playersl,(300,300)) #draw character
     else: #if flipped gravity
       if big: #if you are big
         if lorr: #if going right
@@ -341,9 +343,9 @@ while True: #level loop
           screen.blit(playergl,(300,300)) #draw character
       else: #if you are small
         if lorr: #if going right
-          screen.blit(playergsr,(325,325)) #draw character
+          screen.blit(playergsr,(300,300)) #draw character
         else: #if left
-          screen.blit(playergsl,(325,325)) #draw character
+          screen.blit(playergsl,(300,300)) #draw character
     
     if win: #if win level
       break #break
