@@ -148,7 +148,7 @@ def startthing(): #the thing at the start
         pygame.draw.rect(screen,(0,0,0),pygame.Rect((175,325),(50,50)))
         pygame.draw.rect(screen,(255,0,0),pygame.Rect((225,325),(50,50)))
         pygame.draw.rect(screen,(0,255,0),pygame.Rect((275,325),(50,50)))
-        pygame.draw.rect(screen,(0,0,255),pygame.Rect((300,300),(50,50)))
+        pygame.draw.rect(screen,(0,0,255),pygame.Rect((325,325),(50,50)))
         pygame.draw.rect(screen,(255,255,0),pygame.Rect((375,325),(50,50)))
         pygame.draw.rect(screen,(255,0,255),pygame.Rect((425,325),(50,50)))
         pygame.draw.rect(screen,(0,255,255),pygame.Rect((475,325),(50,50)))
