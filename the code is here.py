@@ -53,7 +53,6 @@ deaths=0 #how many times you died
 playermask=None #the playermask
 gravity=1 #is gravity up or down?
 cang=True #can switch gravity
-cann=True #can skip
 skips=0 #number of skips
 
 def setmask(): #define setmask
@@ -364,10 +363,9 @@ while True: #level loop
     
     pygame.display.flip() #flip screen
     
-    if keys[pygame.K_n] and cann: #if you skip and can skip
+    if keys[pygame.K_n]: #if you skip and can skip
       skips+=1
       break #go to next level
-    cann=not keys[pygame.K_n] #set can skip to not pressing n
     
     time.sleep(0.02) #slow down game
   level+=1 #go to next level
