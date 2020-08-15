@@ -1,4 +1,4 @@
-import sys,time,os #import sys for exiting, time for waiting, os for hiding support prompt.
+import sys,time,os,time #import sys for exiting, time for waiting, os for hiding support prompt, and time for recording the time
 
 os.environ['PYGAME_HIDE_SUPPORT_PROMPT']="hide" #hide support prompt
 
@@ -54,6 +54,7 @@ playermask=None #the playermask
 gravity=1 #is gravity up or down?
 cang=True #can switch gravity
 skips=0 #number of skips
+currenttime=time.time() #the current time
 
 def setmask(): #define setmask
   global top,side,bottom,playermask #make these things global
@@ -118,8 +119,9 @@ def drawtext(text,colour,size=30,pos=(350,100)): #draws a single piece of text
   screen.blit(pygame.font.SysFont("arial",size).render(text,True,colour),(pos[0]-round(pygame.font.SysFont("arial",size).render(text,True,colour).get_width()/2),pos[1]-pygame.font.SysFont("arial",size).render(text,True,colour).get_height()/2)) #draw it
 
 def startthing(): #the thing at the start
-  global playerr,playerl,playersr,playersl #set everything to be global
-  
+  global playerr,playerl,playersr,playersl,currenttime #set everything to be global
+
+  ctime=time.time()
   screen.fill((255,255,255)) #fill screen
   drawtext("scrolling platformer",(0,0,0),50) #draw text
   
@@ -142,6 +144,7 @@ def startthing(): #the thing at the start
       
       if event.type==pygame.MOUSEBUTTONDOWN and pygame.mouse.get_pos()[0]>=300 and pygame.mouse.get_pos()[0]<=400 and pygame.mouse.get_pos()[1]>=300 and pygame.mouse.get_pos()[1]<=400: #if you press play
         keep_going=False #go to the main game
+        currenttime+=time.time()-ctime
       
       if event.type==pygame.MOUSEBUTTONDOWN and pygame.mouse.get_pos()[0]>=100 and pygame.mouse.get_pos()[0]<=300 and pygame.mouse.get_pos()[1]>=300 and pygame.mouse.get_pos()[1]<=400:
         #draw the screen
@@ -359,7 +362,7 @@ while True: #level loop
     if keys[pygame.K_p]: #if you press pause
       startthing() #do the start thing
     
-    screen.blit(pygame.font.SysFont("arial",30).render("level: "+str(level)+" deaths: "+str(deaths)+" skips: "+str(skips),True,(128,128,128)),(0,0)) #draw level
+    screen.blit(pygame.font.SysFont("arial",30).render("level: "+str(level)+" deaths: "+str(deaths)+" skips: "+str(skips)+" time: "+str(int(time.time()-currenttime)),True,(128,128,128)),(0,0)) #draw level
     
     pygame.display.flip() #flip screen
     
