@@ -8,7 +8,7 @@ pygame.init() #initiate pygame
 screen=pygame.display.set_mode([700,700]) #set pygame display
 pygame.display.set_caption("Scrolling platformer") #set caption
 
-playerr=pygame.image.load("C:/Users/Rainbow/Documents/GitHub/scrolling-platformer/player.png") #load file
+playerr=pygame.image.load("player.png") #load file
 playerr.set_colorkey((255,255,255)) #set colourkey
 playerl=pygame.transform.flip(playerr,True,False) #make player left
 playersr=pygame.transform.scale(playerr,(25,25)) #small player right
@@ -18,12 +18,12 @@ playergr=pygame.transform.flip(playerr,False,True) #make player upside down righ
 playergsl=pygame.transform.flip(playersl,False,True) #make player upside down small left
 playergsr=pygame.transform.flip(playersr,False,True) #make player upside down small right
 
-bottomb=pygame.mask.from_threshold(pygame.image.load("C:/Users/Rainbow/Documents/GitHub/scrolling-platformer/bottom.png"),(0,0,0),(1,1,1)) #bottom mask
-sideb=pygame.mask.from_threshold(pygame.image.load("C:/Users/Rainbow/Documents/GitHub/scrolling-platformer/side.png"),(0,0,0),(1,1,1)) #side mask
-topb=pygame.mask.from_threshold(pygame.image.load("C:/Users/Rainbow/Documents/GitHub/scrolling-platformer/top.png"),(0,0,0),(1,1,1)) #top mask
-bottoms=pygame.mask.from_threshold(pygame.image.load("C:/Users/Rainbow/Documents/GitHub/scrolling-platformer/bottomsmall.png"),(0,0,0),(1,1,1)) #bottom small mask
-sides=pygame.mask.from_threshold(pygame.image.load("C:/Users/Rainbow/Documents/GitHub/scrolling-platformer/sidesmall.png"),(0,0,0),(1,1,1)) #side small mask
-tops=pygame.mask.from_threshold(pygame.image.load("C:/Users/Rainbow/Documents/GitHub/scrolling-platformer/topsmall.png"),(0,0,0),(1,1,1)) #top small mask
+bottomb=pygame.mask.from_threshold(pygame.image.load("bottom.png"),(0,0,0),(1,1,1)) #bottom mask
+sideb=pygame.mask.from_threshold(pygame.image.load("side.png"),(0,0,0),(1,1,1)) #side mask
+topb=pygame.mask.from_threshold(pygame.image.load("top.png"),(0,0,0),(1,1,1)) #top mask
+bottoms=pygame.mask.from_threshold(pygame.image.load("bottomsmall.png"),(0,0,0),(1,1,1)) #bottom small mask
+sides=pygame.mask.from_threshold(pygame.image.load("sidesmall.png"),(0,0,0),(1,1,1)) #side small mask
+tops=pygame.mask.from_threshold(pygame.image.load("topsmall.png"),(0,0,0),(1,1,1)) #top small mask
 
 levelpic=None #set the level picture
 
@@ -72,7 +72,7 @@ def loadlevel(): #load the level
   try: #try to
     global levelpic,groundmask,lavamask,jumpymask,fastleftmask,fastrightmask,watermask,shrinkmask,normalmask,winmask,gravitymask #make all of these global
     
-    levelpic=pygame.image.load(f"C:/Users/Rainbow/Documents/GitHub/scrolling-platformer/levels/{level}.png") #level picture
+    levelpic=pygame.image.load(f"levels/{level}.png") #level picture
     
     #all of the next ones are making the level masks
     groundmask=pygame.mask.from_threshold(levelpic,(0,0,0),(1,1,1))
@@ -115,15 +115,15 @@ def down(): #go down
   while bool(groundmask.overlap_area(top,(screenposx+300,screenposy+299))): #while touching ground
     screenposy+=1 #go down
 
-def drawtext(text,colour,size=30,pos=(350,100)): #draws a single piece of text
-  screen.blit(pygame.font.SysFont("arial",size).render(text,True,colour),(pos[0]-round(pygame.font.SysFont("arial",size).render(text,True,colour).get_width()/2),pos[1]-pygame.font.SysFont("arial",size).render(text,True,colour).get_height()/2)) #draw it
+def drawtext(text,size=30,pos=(350,100)): #draws a single piece of text
+  screen.blit(pygame.font.SysFont("arial",size).render(text,True,(0,0,0)),(pos[0]-round(pygame.font.SysFont("arial",size).render(text,True,(0,0,0)).get_width()/2),pos[1]-pygame.font.SysFont("arial",size).render(text,True,(0,0,0)).get_height()/2)) #draw it
 
 def startthing(): #the thing at the start
   global playerr,playerl,playersr,playersl,currenttime #set everything to be global
 
   ctime=time.time()
   screen.fill((255,255,255)) #fill screen
-  drawtext("scrolling platformer",(0,0,0),50) #draw text
+  drawtext("scrolling platformer",50) #draw text
   
   #drawing play button
   pygame.draw.rect(screen,(0,0,0),pygame.Rect((300,300),(100,100)),1)
@@ -132,7 +132,8 @@ def startthing(): #the thing at the start
   pygame.draw.line(screen,(0,0,0),(336,375),(379,350))
   pygame.draw.rect(screen,(0,0,0),pygame.Rect((100,300),(100,100)),1)
   screen.blit(playerr,(125,325)) #draw player
-  
+  pygame.draw.rect(screen,(0,0,0),pygame.Rect((500,300),(100,100)),1)
+  drawtext("instructions",19,(550,350))
   pygame.display.flip() #flip screen
   keep_going=True #set keep_going
   
@@ -146,7 +147,7 @@ def startthing(): #the thing at the start
         keep_going=False #go to the main game
         currenttime+=time.time()-ctime
       
-      if event.type==pygame.MOUSEBUTTONDOWN and pygame.mouse.get_pos()[0]>=100 and pygame.mouse.get_pos()[0]<=300 and pygame.mouse.get_pos()[1]>=300 and pygame.mouse.get_pos()[1]<=400:
+      if event.type==pygame.MOUSEBUTTONDOWN and pygame.mouse.get_pos()[0]>=100 and pygame.mouse.get_pos()[0]<=200 and pygame.mouse.get_pos()[1]>=300 and pygame.mouse.get_pos()[1]<=400:
         #draw the screen
         screen.fill((255,255,255))
         pygame.draw.rect(screen,(0,0,0),pygame.Rect((175,325),(50,50)))
@@ -219,19 +220,47 @@ def startthing(): #the thing at the start
                 playergr=pygame.transform.flip(playerr,False,True) #make player upside down right
                 playergsl=pygame.transform.flip(playersl,False,True) #make player upside down small left
                 playergsr=pygame.transform.flip(playersr,False,True) #make player upside down small right
+
               #draw the things
               screen.fill((255,255,255))
-              drawtext("scrolling platformer",(0,0,0),50)
+              drawtext("scrolling platformer",50)
               pygame.draw.rect(screen,(0,0,0),pygame.Rect((300,300),(100,100)),1)
               pygame.draw.line(screen,(0,0,0),(336,325),(336,375))
               pygame.draw.line(screen,(0,0,0),(336,325),(379,350))
               pygame.draw.line(screen,(0,0,0),(336,375),(379,350))
               pygame.draw.rect(screen,(0,0,0),pygame.Rect((100,300),(100,100)),1)
               screen.blit(playerr,(125,325))
+              pygame.draw.rect(screen,(0,0,0),pygame.Rect((500,300),(100,100)),1)
+              drawtext("instructions",19,(550,350))
               
               kep_going=False #exit this loop
               pygame.display.flip() #flip screen
-
+      if event.type==pygame.MOUSEBUTTONDOWN and pygame.mouse.get_pos()[0]>=500 and pygame.mouse.get_pos()[0]<=600 and pygame.mouse.get_pos()[1]>=300 and pygame.mouse.get_pos()[1]<=400:
+        screen.blit(pygame.image.load("instructions.png"),(0,0))
+        kp_going=True #lollllll
+        while kp_going:
+          for event in pygame.event.get():
+            if event.type==pygame.QUIT:
+              pygame.quit()
+              sys.exit()
+            if event.type==pygame.KEYDOWN:
+              if event.key==pygame.K_SPACE:
+                kp_going=False
+          pygame.display.flip()
+        #draw the things
+        screen.fill((255,255,255))
+        drawtext("scrolling platformer",50)
+        pygame.draw.rect(screen,(0,0,0),pygame.Rect((300,300),(100,100)),1)
+        pygame.draw.line(screen,(0,0,0),(336,325),(336,375))
+        pygame.draw.line(screen,(0,0,0),(336,325),(379,350))
+        pygame.draw.line(screen,(0,0,0),(336,375),(379,350))
+        pygame.draw.rect(screen,(0,0,0),pygame.Rect((100,300),(100,100)),1)
+        screen.blit(playerr,(125,325))
+        pygame.draw.rect(screen,(0,0,0),pygame.Rect((500,300),(100,100)),1)
+        drawtext("instructions",19,(550,350))
+        
+        kep_going=False #exit this loop
+        pygame.display.flip() #flip screen
 #real game
 
 startthing()
