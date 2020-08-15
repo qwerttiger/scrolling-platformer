@@ -309,7 +309,7 @@ while True: #level loop
       big=True #become big
     
     keys=pygame.key.get_pressed() #the pressed keys
-    if keys[pygame.K_UP] and ((tbottom and gravity==1) or (ttop and gravity==-1)) and not water: #if pressing up and touching bottom
+    if keys[pygame.K_UP] and ((tbottom and gravity==1) or (ttop and gravity==-1)) and not water and not ((tbottom and gravity==-1) or (ttop and gravity==1)): #if pressing up and touching bottom and not touching top and not in water
       vely+=30*gravity #jump
     if keys[pygame.K_UP] and water: #if going up in water
       vely=4*gravity
