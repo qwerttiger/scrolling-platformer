@@ -289,6 +289,8 @@ while True: #level loop
 
     if ((not tbottom and gravity==1) or (not ttop and gravity==-1)) and not water: #if bottom not touching ground and not touching water
       vely-=2*gravity #accelerate down
+    if ((not tbottom and gravity==1) or (not ttop and gravity==-1)) and water: #if bottom not touching ground and touching water
+      vely=-2*gravity #go down
     
     if tside:
       velx=-velx
@@ -298,7 +300,7 @@ while True: #level loop
     if fastright:
       velx+=30
 
-    if grâvity and cang: #if you are touching gracity and you can switch gravity
+    if grâvity and cang: #if you are touching gravity and you can switch gravity
       gravity=-gravity #reverse gravity
     cang=not grâvity #set cang to not grâvity
 
@@ -311,9 +313,7 @@ while True: #level loop
     if keys[pygame.K_UP] and ((tbottom and gravity==1) or (ttop and gravity==-1)) and not water: #if pressing up and touching bottom
       vely+=30*gravity #jump
     if keys[pygame.K_UP] and water: #if going up in water
-      screenposy-=4*gravity #go up
-    if not keys[pygame.K_UP] and water: #if not going up in water
-      screenposy+=2*gravity #go down
+      vely=4*gravity
     if keys[pygame.K_LEFT]: #if going left
       velx-=3 #go left
       lorr=False #face left
