@@ -54,7 +54,7 @@ playermask=None #the playermask
 gravity=1 #is gravity up or down?
 cang=True #can switch gravity
 cann=True #can skip
-skips=0
+skips=0 #number of skips
 
 def setmask(): #define setmask
   global top,side,bottom,playermask #make these things global
