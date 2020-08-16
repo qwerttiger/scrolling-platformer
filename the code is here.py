@@ -124,10 +124,10 @@ def drawtext(text,size=30,pos=(350,100)): #draws a single piece of text
 def startthing(): #the thing at the start
   global playerr,playerl,playersr,playersl,currenttime #set everything to be global
 
-  ctime=time.time()
+  ctime=time.time() #set ctime to be the current time
+  
   screen.fill((255,255,255)) #fill screen
   drawtext("scrolling platformer",50) #draw text
-  
   #drawing play button
   pygame.draw.rect(screen,(0,0,0),pygame.Rect((300,300),(100,100)),1)
   pygame.draw.line(screen,(0,0,0),(336,325),(336,375))
@@ -275,8 +275,8 @@ while True: #level loop
   loadlevel() #load the level
   reset() #reset position
   
-  while True:
-    setmask()
+  while True: #game loop
+    setmask() #sets player mask
     
     #bottom, side, top touching ground
     tbottom=bool(groundmask.overlap_area(bottom,(screenposx+300,screenposy+300)))
