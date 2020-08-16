@@ -296,9 +296,14 @@ while True: #level loop
     if screenposx<-300: #if you go past boundary
       screenposx=-300 #go back to boundary
       velx=0 #set speed=0
-    if screenposx>3150: #other boundary
-      screenposx=3150 #go back
-      velx=0 #freeze speed
+    if big:
+      if screenposx>3150: #other boundary
+        screenposx=3150 #go back
+        velx=0 #freeze speed
+    else:
+      if screenposx>3175: #other boundary
+        screenposx=3175 #go back
+        velx=0 #freeze speed
     
     screen.blit(levelpic,(-screenposx,-screenposy)) #draw the background
     
