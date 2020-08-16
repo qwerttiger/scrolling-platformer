@@ -341,16 +341,16 @@ while True: #level loop
       big=True #become big
     
     keys=pygame.key.get_pressed() #the pressed keys
-    if keys[pygame.K_UP] and ((tbottom and gravity==1) or (ttop and gravity==-1)) and not water and not ((tbottom and gravity==-1) or (ttop and gravity==1)): #if pressing up and touching bottom and not touching top and not in water
+    if (keys[pygame.K_UP] or keys[pygame.K_w]) and ((tbottom and gravity==1) or (ttop and gravity==-1)) and not water and not ((tbottom and gravity==-1) or (ttop and gravity==1)): #if pressing up and touching bottom and not touching top and not in water
       vely+=30*gravity #jump
-    if keys[pygame.K_UP] and water and not ((tbottom and gravity==-1) or (ttop and gravity==1)): #if going up in water
+    if (keys[pygame.K_UP] or keys[pygame.K_w]) and water and not ((tbottom and gravity==-1) or (ttop and gravity==1)): #if going up in water
       vely=4*gravity
-    if keys[pygame.K_DOWN] and water and not ((tbottom and gravity==1) or (ttop and gravity==-1)): #if going down in water
+    if (keys[pygame.K_DOWN] or keys[pygame.K_s]) and water and not ((tbottom and gravity==1) or (ttop and gravity==-1)): #if going down in water
       vely=-4*gravity
-    if keys[pygame.K_LEFT]: #if going left
+    if keys[pygame.K_LEFT] or keys[pygame.K_a]: #if going left
       velx-=3 #go left
       lorr=False #face left
-    if keys[pygame.K_RIGHT]: #if going right
+    if keys[pygame.K_RIGHT] or keys[pygame.K_d]: #if going right
       velx+=3 #go right
       lorr=True #face right
     
