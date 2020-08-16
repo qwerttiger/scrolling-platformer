@@ -43,7 +43,7 @@ playermasks=pygame.mask.Mask((25,25),True) #player mask small
 
 velx=0 #x speed
 vely=0 #y speed
-lorr=True #left or right
+right=True #left or right
 level=1 #level
 big=True #small or big
 top=None #top mask
@@ -68,6 +68,7 @@ def setmask(): #define setmask
     side=sides #set side mask
     bottom=bottoms #set bottom mask
     playermask=playermasks #set playermask
+
 def loadlevel(): #load the level
   try: #try to
     global levelpic,groundmask,lavamask,jumpymask,fastleftmask,fastrightmask,watermask,shrinkmask,normalmask,winmask,gravitymask #make all of these global
@@ -100,7 +101,9 @@ def reset(): #reset position and speed
   
   velx=0 #x speed=0
   vely=0 #y speed=0
+  
   big=True #make you big
+  
   gravity=1 #set gravity to normal
 
 def up(): #go up
@@ -134,9 +137,10 @@ def startthing(): #the thing at the start
   screen.blit(playerr,(125,325)) #draw player
   pygame.draw.rect(screen,(0,0,0),pygame.Rect((500,300),(100,100)),1)
   drawtext("instructions",19,(550,350))
-  pygame.display.flip() #flip screen
-  keep_going=True #set keep_going
   
+  pygame.display.flip() #flip screen
+  
+  keep_going=True #set keep_going
   while keep_going: #while you keep going
     for event in pygame.event.get(): #for every event
       if event.type==pygame.QUIT: #if quit
@@ -146,6 +150,7 @@ def startthing(): #the thing at the start
       if event.type==pygame.MOUSEBUTTONDOWN and pygame.mouse.get_pos()[0]>=300 and pygame.mouse.get_pos()[0]<=400 and pygame.mouse.get_pos()[1]>=300 and pygame.mouse.get_pos()[1]<=400: #if you press play
         keep_going=False #go to the main game
         currenttime+=time.time()-ctime
+      
       if event.type==pygame.MOUSEBUTTONDOWN and pygame.mouse.get_pos()[0]>=500 and pygame.mouse.get_pos()[0]<=600 and pygame.mouse.get_pos()[1]>=300 and pygame.mouse.get_pos()[1]<=400:
         screen.blit(pygame.image.load("instructions.png"),(0,0))
         kp_going=True #lollllll
@@ -172,6 +177,7 @@ def startthing(): #the thing at the start
         
         kep_going=False #exit this loop
         pygame.display.flip() #flip screen
+      
       if event.type==pygame.MOUSEBUTTONDOWN and pygame.mouse.get_pos()[0]>=100 and pygame.mouse.get_pos()[0]<=200 and pygame.mouse.get_pos()[1]>=300 and pygame.mouse.get_pos()[1]<=400:
         #draw the screen
         screen.fill((255,255,255))
@@ -271,6 +277,7 @@ while True: #level loop
   
   while True:
     setmask()
+    
     #bottom, side, top touching ground
     tbottom=bool(groundmask.overlap_area(bottom,(screenposx+300,screenposy+300)))
     tside=bool(groundmask.overlap_area(side,(screenposx+299,screenposy+300)))
@@ -296,6 +303,7 @@ while True: #level loop
     if screenposx<-300: #if you go past boundary
       screenposx=-300 #go back to boundary
       velx=0 #set speed=0
+    
     if big:
       if screenposx>3150: #other boundary
         screenposx=3150 #go back
@@ -338,6 +346,7 @@ while True: #level loop
 
     if grâvity and cang: #if you are touching gravity and you can switch gravity
       gravity=-gravity #reverse gravity
+    
     cang=not grâvity #set cang to not grâvity
 
     if shrink: #if you are touching shrink
@@ -348,52 +357,63 @@ while True: #level loop
     keys=pygame.key.get_pressed() #the pressed keys
     if (keys[pygame.K_UP] or keys[pygame.K_w]) and ((tbottom and gravity==1) or (ttop and gravity==-1)) and not water and not ((tbottom and gravity==-1) or (ttop and gravity==1)): #if pressing up and touching bottom and not touching top and not in water
       vely+=30*gravity #jump
+    
     if (keys[pygame.K_UP] or keys[pygame.K_w]) and water and not ((tbottom and gravity==-1) or (ttop and gravity==1)): #if going up in water
       vely=4*gravity
+    
     if (keys[pygame.K_DOWN] or keys[pygame.K_s]) and water and not ((tbottom and gravity==1) or (ttop and gravity==-1)): #if going down in water
       vely=-4*gravity
+    
     if keys[pygame.K_LEFT] or keys[pygame.K_a]: #if going left
       velx-=3 #go left
-      lorr=False #face left
+      right=False #face left
     if keys[pygame.K_RIGHT] or keys[pygame.K_d]: #if going right
       velx+=3 #go right
-      lorr=True #face right
+      right=True #face right
     
     if jumpy: #if touching jumpy
       vely+=20*gravity #jump
     
     screenposx+=velx #change by x velocity
     screenposy-=vely #change by y velocity
+    
     if gravity==1: #if going normal
       if big: #if you are big
-        if lorr: #if going right
+        if right: #if going right
           screen.blit(playerr,(300,300)) #draw character
         else: #if left
           screen.blit(playerl,(300,300)) #draw character
       else: #if you are small
-        if lorr: #if going right
+        if right: #if going right
           screen.blit(playersr,(300,300)) #draw character
         else: #if left
           screen.blit(playersl,(300,300)) #draw character
     else: #if flipped gravity
       if big: #if you are big
-        if lorr: #if going right
+        if right: #if going right
           screen.blit(playergr,(300,300)) #draw character
         else: #if left
           screen.blit(playergl,(300,300)) #draw character
       else: #if you are small
-        if lorr: #if going right
+        if right: #if going right
           screen.blit(playergsr,(300,300)) #draw character
         else: #if left
           screen.blit(playergsl,(300,300)) #draw character
     
-    if win: #if win level
+    if win: #if you win th level
       break #break
     
     if lava or keys[pygame.K_r] or (screenposy>=3700 and gravity==1) or (screenposy<=0 and gravity==-1): #if touch lava
       reset() #reset level
+      
       if not keys[pygame.K_r]: #if you either fall of the screen or touch lava
         deaths+=1 #add 1 to deaths
+      elif keys[pygame.K_e]:
+        level=0
+        currenttime=time.time()
+        deaths=0
+        skips=0
+        break
     
     if keys[pygame.K_p]: #if you press pause
       startthing() #do the start thing
