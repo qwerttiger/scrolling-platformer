@@ -146,7 +146,32 @@ def startthing(): #the thing at the start
       if event.type==pygame.MOUSEBUTTONDOWN and pygame.mouse.get_pos()[0]>=300 and pygame.mouse.get_pos()[0]<=400 and pygame.mouse.get_pos()[1]>=300 and pygame.mouse.get_pos()[1]<=400: #if you press play
         keep_going=False #go to the main game
         currenttime+=time.time()-ctime
-      
+      if event.type==pygame.MOUSEBUTTONDOWN and pygame.mouse.get_pos()[0]>=500 and pygame.mouse.get_pos()[0]<=600 and pygame.mouse.get_pos()[1]>=300 and pygame.mouse.get_pos()[1]<=400:
+        screen.blit(pygame.image.load("instructions.png"),(0,0))
+        kp_going=True #lollllll
+        while kp_going:
+          for event in pygame.event.get():
+            if event.type==pygame.QUIT:
+              pygame.quit()
+              sys.exit()
+            if event.type==pygame.KEYDOWN:
+              if event.key==pygame.K_SPACE:
+                kp_going=False
+          pygame.display.flip()
+        #draw the things
+        screen.fill((255,255,255))
+        drawtext("scrolling platformer",50)
+        pygame.draw.rect(screen,(0,0,0),pygame.Rect((300,300),(100,100)),1)
+        pygame.draw.line(screen,(0,0,0),(336,325),(336,375))
+        pygame.draw.line(screen,(0,0,0),(336,325),(379,350))
+        pygame.draw.line(screen,(0,0,0),(336,375),(379,350))
+        pygame.draw.rect(screen,(0,0,0),pygame.Rect((100,300),(100,100)),1)
+        screen.blit(playerr,(125,325))
+        pygame.draw.rect(screen,(0,0,0),pygame.Rect((500,300),(100,100)),1)
+        drawtext("instructions",19,(550,350))
+        
+        kep_going=False #exit this loop
+        pygame.display.flip() #flip screen
       if event.type==pygame.MOUSEBUTTONDOWN and pygame.mouse.get_pos()[0]>=100 and pygame.mouse.get_pos()[0]<=200 and pygame.mouse.get_pos()[1]>=300 and pygame.mouse.get_pos()[1]<=400:
         #draw the screen
         screen.fill((255,255,255))
@@ -235,32 +260,7 @@ def startthing(): #the thing at the start
               
               kep_going=False #exit this loop
               pygame.display.flip() #flip screen
-      if event.type==pygame.MOUSEBUTTONDOWN and pygame.mouse.get_pos()[0]>=500 and pygame.mouse.get_pos()[0]<=600 and pygame.mouse.get_pos()[1]>=300 and pygame.mouse.get_pos()[1]<=400:
-        screen.blit(pygame.image.load("instructions.png"),(0,0))
-        kp_going=True #lollllll
-        while kp_going:
-          for event in pygame.event.get():
-            if event.type==pygame.QUIT:
-              pygame.quit()
-              sys.exit()
-            if event.type==pygame.KEYDOWN:
-              if event.key==pygame.K_SPACE:
-                kp_going=False
-          pygame.display.flip()
-        #draw the things
-        screen.fill((255,255,255))
-        drawtext("scrolling platformer",50)
-        pygame.draw.rect(screen,(0,0,0),pygame.Rect((300,300),(100,100)),1)
-        pygame.draw.line(screen,(0,0,0),(336,325),(336,375))
-        pygame.draw.line(screen,(0,0,0),(336,325),(379,350))
-        pygame.draw.line(screen,(0,0,0),(336,375),(379,350))
-        pygame.draw.rect(screen,(0,0,0),pygame.Rect((100,300),(100,100)),1)
-        screen.blit(playerr,(125,325))
-        pygame.draw.rect(screen,(0,0,0),pygame.Rect((500,300),(100,100)),1)
-        drawtext("instructions",19,(550,350))
-        
-        kep_going=False #exit this loop
-        pygame.display.flip() #flip screen
+
 #real game
 
 startthing()
