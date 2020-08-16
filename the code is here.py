@@ -214,8 +214,8 @@ def startthing(): #the thing at the start
                         playerr.set_at((posx,posy),(0,255,255))
                 
                 playerl=pygame.transform.flip(playerr,True,False) #set the new playerl
-                playersr=pygame.transform.scale(playerr,(25,25))
-                playersl=pygame.transform.scale(playerl,(25,25))
+                playersr=pygame.transform.scale(playerr,(25,25)) #make the new player small right
+                playersl=pygame.transform.scale(playerl,(25,25)) #same for the player small left
                 playergl=pygame.transform.flip(playerl,False,True) #make player upside down left
                 playergr=pygame.transform.flip(playerr,False,True) #make player upside down right
                 playergsl=pygame.transform.flip(playersl,False,True) #make player upside down small left
@@ -284,7 +284,7 @@ while True: #level loop
     water=bool(watermask.overlap_area(playermask,(screenposx+300,screenposy+300))) #touching water
     shrink=bool(shrinkmask.overlap_area(playermask,(screenposx+300,screenposy+300))) #touching shrink
     normal=bool(normalmask.overlap_area(playermask,(screenposx+300,screenposy+300))) #touching normal
-    grâvity=bool(gravitymask.overlap_area(playermask,(screenposx+300,screenposy+300))) #touching normal
+    grâvity=bool(gravitymask.overlap_area(playermask,(screenposx+300,screenposy+300))) #touching gravity
     
     screen.fill((255,255,255)) #fill screen
     
@@ -345,6 +345,8 @@ while True: #level loop
       vely+=30*gravity #jump
     if keys[pygame.K_UP] and water: #if going up in water
       vely=4*gravity
+    if keys[pygame.K_DOWN] and water: #if going down in water
+      vely=-4*gravity
     if keys[pygame.K_LEFT]: #if going left
       velx-=3 #go left
       lorr=False #face left
