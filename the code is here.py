@@ -89,7 +89,7 @@ def loadlevel(): #load the level
   except: #if the file does not exist, which means you won
     pygame.quit() #quit pygame
     
-    input("YOU WIN") #print you win
+    input("you won with "+str(deaths)+" deaths, "+str(skips)+" skips, and "+str(int(time.time()-currenttime))+" seconds.") #print you win
     
     sys.exit() #exit
 
