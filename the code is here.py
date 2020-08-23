@@ -119,7 +119,7 @@ def down(): #go down
     screenposy+=1 #go down
 
 def drawtext(text,size=30,pos=(350,100)): #draws a single piece of text
-  screen.blit(pygame.font.SysFont("arial",size).render(text,True,(0,0,0)),(pos[0]-round(pygame.font.SysFont("arial",size).render(text,True,(0,0,0)).get_width()/2),pos[1]-pygame.font.SysFont("arial",size).render(text,True,(0,0,0)).get_height()/2)) #draw it
+  screen.blit(pygame.font.SysFont("arial",size).render(text,True,(0,0,0)),(pos[0]-round(pygame.font.SysFont("arial",size).render(text,True,(0,0,0)).get_width()/2),pos[1]-pygame.font.SysFont("arial",size).render(text,True,(0,0,0)).get_height()/2)) #draw the thing
 
 def startthing(): #the thing at the start
   global playerr,playerl,playersr,playersl,currenttime #set everything to be global
@@ -359,10 +359,10 @@ while True: #level loop
       vely+=30*gravity #jump
     
     if (keys[pygame.K_UP] or keys[pygame.K_w]) and water and not ((tbottom and gravity==-1) or (ttop and gravity==1)): #if going up in water
-      vely=4*gravity
+      vely=4*gravity #go up
     
     if (keys[pygame.K_DOWN] or keys[pygame.K_s]) and water and not ((tbottom and gravity==1) or (ttop and gravity==-1)): #if going down in water
-      vely=-4*gravity
+      vely=-4*gravity #go down
     
     if keys[pygame.K_LEFT] or keys[pygame.K_a]: #if going left
       velx-=3 #go left
@@ -408,12 +408,12 @@ while True: #level loop
       
       if not keys[pygame.K_r]: #if you either fall of the screen or touch lava
         deaths+=1 #add 1 to deaths
-      elif keys[pygame.K_e]:
-        level=0
-        currenttime=time.time()
-        deaths=0
-        skips=0
-        break
+      elif keys[pygame.K_e]: #if you press "r" and "e" at the same time
+        level=0 #set level to be 0 so the next level will be 1
+        currenttime=time.time() #set the start time to be the current time
+        deaths=0 #deaths=0
+        skips=0 #skips=0
+        break #go to next level
     
     if keys[pygame.K_p]: #if you press pause
       startthing() #do the start thing
@@ -422,7 +422,7 @@ while True: #level loop
     
     pygame.display.flip() #flip screen
     
-    if keys[pygame.K_n]: #if you skip and can skip
+    if keys[pygame.K_n]: #if you skip
       skips+=1
       break #go to next level
     
