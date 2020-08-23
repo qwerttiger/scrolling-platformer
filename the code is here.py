@@ -122,7 +122,7 @@ def drawtext(text,size=30,pos=(350,100)): #draws a single piece of text
   screen.blit(pygame.font.SysFont("arial",size).render(text,True,(0,0,0)),(pos[0]-round(pygame.font.SysFont("arial",size).render(text,True,(0,0,0)).get_width()/2),pos[1]-pygame.font.SysFont("arial",size).render(text,True,(0,0,0)).get_height()/2)) #draw the thing
 
 def startthing(): #the thing at the start
-  global playerr,playerl,playersr,playersl,currenttime #set everything to be global
+  global playerr,playerl,playersr,playersl,playergl,playergr,playergsl,playergsr,currenttime #set everything to be global
 
   ctime=time.time() #set ctime to be the current time
   
